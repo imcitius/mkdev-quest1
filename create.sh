@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # please provide .iso file in tmp for this to work, or change its path
