@@ -11,4 +11,4 @@ else
  VMNAME=$1
 fi
 
-/usr/bin/virt-install --name $VMNAME --location /tmp/CentOS-7-x86_64-Minimal-1611.iso --memory=1024 --vcpus=1 --disk size=8 --initrd-inject ks.cfg --extra-args ks=file:/ks.cfg --extra-args="console=ttyS0"
+/usr/bin/virt-install --name $VMNAME --location /tmp/CentOS-7-x86_64-Minimal-1611.iso --memory=1024 --vcpus=1 --disk size=4 --initrd-inject ks.cfg --extra-args ks=file:/ks.cfg --extra-args="console=ttyS0"
