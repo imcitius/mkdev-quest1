@@ -11,26 +11,54 @@ Vagrant.configure("2") do |config|
        workspace.memory = 1024
        workspace.cpus = 1
      end
-   end
+   
+   workspace.vm.provision "shell", path: "puppet_script.sh"
 
-  config.vm.define "nexus" do |nexus|
-    nexus.vm.box = "mkdev"
-    nexus.vm.provider :libvirt do |nexus|
-      nexus.memory = 1024
-      nexus.cpus = 1
+   config.librarian_puppet.puppetfile_dir = "puppet"
+   # placeholder_filename defaults to .PLACEHOLDER
+   config.librarian_puppet.placeholder_filename = ".MYPLACEHOLDER"
+   config.librarian_puppet.use_v1_api  = '1' # Check https://github.com/voxpupuli/librarian-puppet#how-to-use
+   config.librarian_puppet.destructive = false # Check https://github.com/voxpupuli/librarian-puppet#how-to-use
+
+    workspace.vm.provision "puppet" do |puppet|
+
+      puppet.environment_path = "puppet/environments"
+      puppet.environment = "workspace"
+      puppet.options = "--verbose --debug"
+      puppet.module_path = "puppet/modules"
+
     end
 
-    nexus.vm.provision "shell", path: "puppet_script.sh"
+end
+
+
+
+   config.vm.define "nexus" do |nexus|
+     nexus.vm.box = "mkdev"
+     nexus.vm.provider :libvirt do |nexus|
+       nexus.memory = 1024
+       nexus.cpus = 1
+   end
+
+   nexus.vm.provision "shell", path: "puppet_script.sh"
+
+   config.librarian_puppet.puppetfile_dir = "puppet"
+   # placeholder_filename defaults to .PLACEHOLDER
+   config.librarian_puppet.placeholder_filename = ".MYPLACEHOLDER"
+   config.librarian_puppet.use_v1_api  = '1' # Check https://github.com/voxpupuli/librarian-puppet#how-to-use
+   config.librarian_puppet.destructive = false # Check https://github.com/voxpupuli/librarian-puppet#how-to-use
 
     nexus.vm.provision "puppet" do |puppet|
 
       puppet.environment_path = "puppet/environments"
       puppet.environment = "nexus"
       puppet.options = "--verbose --debug"
+      puppet.module_path = "puppet/modules"
 
     end
 
   end
+
 
 end
 

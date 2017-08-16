@@ -1,0 +1,4 @@
+step5/puppet/modules/*
+!step5/puppet/modules/files
+step5/puppet/.*
+step5/.*
