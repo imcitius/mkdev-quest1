@@ -1,0 +1,8 @@
+forge "https://forgeapi.puppetlabs.com"
+
+mod 'maestrodev-wget'
+mod 'puppetlabs-java'
+mod 'puppetlabs-stdlib'
+mod 'hubspot-nexus'
+mod 'maestrodev-maven'
+mod 'puppetlabs-vcsrepo'

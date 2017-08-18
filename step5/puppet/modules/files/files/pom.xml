@@ -1,0 +1,106 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>fast_blank</groupId>
+  <artifactId>fast_blank</artifactId>
+  <packaging>rpm</packaging>
+
+  <version>1.0-SNAPSHOT</version>
+  <name>fast_blank</name>
+  <description>This is a sample build of RPM using maven.</description>
+
+  <scm>
+    <connection>scm:git:https://github.com/SamSaffron/fast_blank.git</connection>
+  </scm>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>nexus-snapshots</id>
+      <url>http://192.168.121.53:8081/nexus/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <properties>
+    <rpm.install.basedir>/opt/fast_blank</rpm.install.basedir>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.7</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.5.1</version>
+        <executions>
+          <execution>
+            <id>default-deploy</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <serverId>nexus</serverId>
+          <nexusUrl>http://192.168.121.53:8081/nexus/</nexusUrl>
+          <skipStaging>true</skipStaging>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <extensions>true</extensions>
+        <artifactId>rpm-maven-plugin</artifactId>
+        <version>2.1.5</version>
+        <executions>
+          <execution>
+            <id>generate-rpm</id>
+            <goals>
+              <goal>rpm</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <license>GPL (c) 2005, citius-mkdev</license>
+          <distribution>citius 2017</distribution>
+          <packager>citius</packager>
+          <prefix>/usr/local</prefix>
+          <group>Development/Libraries</group>
+
+          <mappings>
+            <mapping>
+              <directory>/${project.artifactId}</directory>
+              <sources>
+                <source>
+                  <location>target/checkout</location>
+                </source>
+              </sources>
+            </mapping>
+          </mappings>
+          <copyto>created-rpm.rpm</copyto>
+
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-plugin</artifactId>
+        <version>1.9.5</version>
+        <configuration>
+          <goals>install</goals>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>
